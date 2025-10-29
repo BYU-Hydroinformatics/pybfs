@@ -1,3 +1,10 @@
+# Runtime dependencies
+numpy>=1.19.0
+pandas>=1.1.0
+matplotlib>=3.3.0
+
+# Documentation dependencies (optional)
+# Uncomment if building documentation
 mkdocs>=1.5.0
 mkdocs-material>=9.4.0
 mkdocstrings[python]>=0.24.0

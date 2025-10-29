@@ -1,0 +1,12 @@
+/* Add spacing before function headings */
+h2, h3, h4 {
+    margin-top: 2em !important;
+}
+
+/* Hide the doc-symbol icons that appear as white boxes */
+.doc-symbol,
+.doc-symbol-heading,
+.doc-symbol-function,
+code.doc-symbol {
+    display: none !important;
+}

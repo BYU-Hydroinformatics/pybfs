@@ -7,7 +7,7 @@ This guide will help you get started with PyBFS quickly.
 Here's a simple example to get you started:
 
 ```python
-import pybfs
+import pybfs as bfs
 
 # Your code here
 ```

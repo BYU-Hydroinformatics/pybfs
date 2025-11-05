@@ -20,11 +20,11 @@ def main():
 
     # Load streamflow data
     print("Loading streamflow data...")
-    streamflow_data = pd.read_csv('tutorial/2312200_data.csv')
+    streamflow_data = pd.read_csv('docs/files/2312200_data.csv')
 
     # Load site parameters
     print("Loading site parameters...")
-    bfs_params_usgs = pd.read_csv('tutorial/bfs_params_50.csv')
+    bfs_params_usgs = pd.read_csv('docs/files/bfs_params_50.csv')
 
     # Get parameters for specific site
     site_number = 2312200

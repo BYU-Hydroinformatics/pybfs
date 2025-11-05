@@ -2,15 +2,10 @@
 
 This page demonstrates practical applications of PyBFS for baseflow separation and forecasting.
 
-## Complete Workflow Example
+## Baseflow Separation Example
 
-This example demonstrates the full PyBFS workflow including:
+This example demonstrates how to use PyBFS to separate baseflow from streamflow data for a specific site. This assumes you have already installed PyBFS and have the necessary data files and are running within a Python environment.
 
-1. Loading streamflow data and site parameters
-2. Generating a baseflow table
-3. Running PyBFS for baseflow separation
-4. Visualizing results
-5. Creating forecasts
 
 ```python
 #!/usr/bin/env python3
@@ -19,10 +14,10 @@ import numpy as np
 import pybfs as bfs
 
 # Load streamflow data
-streamflow_data = pd.read_csv('tutorial/2312200_data.csv')
+streamflow_data = pd.read_csv('docs/files/2312200_data.csv')
 
 # Load site parameters
-bfs_params_usgs = pd.read_csv('tutorial/bfs_params_50.csv')
+bfs_params_usgs = pd.read_csv('docs/files/bfs_params_50.csv')
 
 # Get parameters for specific site
 site_number = 2312200
@@ -64,7 +59,7 @@ bfs.plot_baseflow_simulation(streamflow_data, result)
 
 ## Forecasting Example
 
-Once you have calibrated the model, you can create forecasts for future periods:
+Once you have calibrated the model, you can create forecasts for future periods as shown below. Again, this assumes you have the necessary data files and are running within a Python environment.
 
 ```python
 # Filter data for calibration period (Jan-Sep 2018)
@@ -109,6 +104,23 @@ streamflow_data_forecast = streamflow_data[
 
 bfs.plot_forecast_baseflow_streamflow(f, streamflow_data_forecast)
 ```
+
+## Google Colab Example
+
+You can also run PyBFS in a Google Colab environment. Here is an example notebook that demonstrates how to do this:
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/BYU-Hydroinformatics/pybfs/blob/main/notebooks/pybfs_sample.ipynb){target="_blank"}
+
+Before running this notebook, make sure to upload the necessary data files to the Colab environment. First of all, you will need to upload a copy of the pybfs.py file to the Colab environment. You can do this by clicking on the folder icon on the left sidebar, then clicking the upload icon (a paper with an upward arrow) to upload the pybfs.py file from your local machine.
+
+The pybfs.py file can be found in the main PyBFS GitHub repository here: [pybfs.py](https://github.com/BYU-Hydroinformatics/pybfs/blob/main/pybfs.py)
+
+Next, you will need to upload the data files used in the examples above (e.g., `2312200_data.csv`, `bfs_params_50.csv`). You can upload these files in the same way you uploaded the pybfs.py file. You can download a copy of the files using these links:
+
+[2312200_data.csv](../files/2312200_data.csv)<br>
+[bfs_params_50.csv](../files/bfs_params_50.csv)
+
+Once you have uploaded the necessary files, you can run the cells in the notebook to perform baseflow separation and forecasting using PyBFS.
 
 ## Tips and Best Practices
 

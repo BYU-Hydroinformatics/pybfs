@@ -228,6 +228,16 @@ gh pr create --title "Your PR Title" --body "Description of changes"
 
 ### Initial Setup
 
+**For Team Members (with repository access):**
+
+1. **Clone the repository**:
+   - Open PyCharm
+   - Go to `Git` → `Clone...`
+   - Enter the repository URL: `https://github.com/originalowner/pybfs.git`
+   - Click `Clone`
+
+**For External Contributors (without repository access):**
+
 1. **Fork the repository** on GitHub (click Fork button)
 2. **Clone your fork**:
    - Open PyCharm
@@ -242,6 +252,25 @@ gh pr create --title "Your PR Title" --body "Description of changes"
    - Click `OK`
 
 ### Creating a New Branch
+
+**For Team Members:**
+
+1. **Switch to main branch**:
+   - Click the branch name in the bottom-right corner
+   - Select `main` from the list
+2. **Pull latest changes**:
+   - Go to `Git` → `Pull...`
+   - Select `origin` as the remote
+   - Select `main` as the branch
+   - Click `Pull`
+3. **Create new branch**:
+   - Click the branch name in the bottom-right
+   - Click `+ New Branch`
+   - Name it: `feature/your-feature-name`
+   - Make sure "Checkout branch" is checked
+   - Click `Create`
+
+**For External Contributors:**
 
 1. **Switch to main branch**:
    - Click the branch name in the bottom-right corner
@@ -270,6 +299,18 @@ gh pr create --title "Your PR Title" --body "Description of changes"
 
 ### Pulling Latest Changes
 
+**For Team Members:**
+
+1. **Pull from origin**:
+   - Go to `Git` → `Pull...`
+   - Select `origin` as the remote
+   - Select `main` as the branch
+   - Click `Pull`
+2. **Resolve conflicts** if any appear in the Conflicts dialog
+3. **Merge and commit** the changes
+
+**For External Contributors:**
+
 1. **Pull from upstream**:
    - Go to `Git` → `Pull...`
    - Select `upstream` as the remote
@@ -286,6 +327,20 @@ gh pr create --title "Your PR Title" --body "Description of changes"
    - Click `Push`
 
 ### Submitting a Pull Request
+
+**For Team Members:**
+
+1. **Via PyCharm** (if GitHub plugin is enabled):
+   - Go to `Git` → `GitHub` → `Create Pull Request`
+   - Fill in the title and description
+   - Click `Create Pull Request`
+2. **Via Browser**:
+   - PyCharm will show a notification with a link to create a PR
+   - Click the link, or visit the repository on GitHub
+   - Click `Compare & pull request`
+   - Fill in details and click `Create pull request`
+
+**For External Contributors:**
 
 1. **Via PyCharm** (if GitHub plugin is enabled):
    - Go to `Git` → `GitHub` → `Create Pull Request`
@@ -307,6 +362,18 @@ gh pr create --title "Your PR Title" --body "Description of changes"
 
 ### Initial Setup
 
+**For Team Members (with repository access):**
+
+1. **Clone the repository**:
+   - Open VS Code
+   - Press `Cmd+Shift+P` / `Ctrl+Shift+P` to open Command Palette
+   - Type and select `Git: Clone`
+   - Enter the repository URL: `https://github.com/originalowner/pybfs.git`
+   - Select a folder location
+   - Click `Open` when prompted
+
+**For External Contributors (without repository access):**
+
 1. **Fork the repository** on GitHub (click Fork button)
 2. **Clone your fork**:
    - Open VS Code
@@ -316,10 +383,28 @@ gh pr create --title "Your PR Title" --body "Description of changes"
    - Select a folder location
    - Click `Open` when prompted
 3. **Add upstream remote**:
-   - Open the terminal in VS Code (`Ctrl+`` or `View` → `Terminal`)
+   - Open the terminal in VS Code (`Ctrl+\`` or `View` → `Terminal`)
    - Run: `git remote add upstream https://github.com/originalowner/pybfs.git`
 
 ### Creating a New Branch
+
+**For Team Members:**
+
+1. **Switch to main branch**:
+   - Click the branch name in the bottom-left corner
+   - Select `main` from the dropdown
+2. **Pull latest changes**:
+   - Click the `...` menu in the Source Control panel
+   - Select `Pull from...`
+   - Choose `origin`
+   - Select `main`
+3. **Create new branch**:
+   - Click the branch name in the bottom-left
+   - Click `+ Create new branch...`
+   - Name it: `feature/your-feature-name`
+   - Press `Enter`
+
+**For External Contributors:**
 
 1. **Switch to main branch**:
    - Click the branch name in the bottom-left corner
@@ -348,6 +433,20 @@ gh pr create --title "Your PR Title" --body "Description of changes"
 
 ### Pulling Latest Changes
 
+**For Team Members:**
+
+1. **Pull from origin**:
+   - Click the `...` menu in the Source Control panel
+   - Select `Pull from...`
+   - Choose `origin`
+   - Select `main`
+2. **Resolve conflicts** if they appear:
+   - VS Code will highlight conflicts in the editor
+   - Click `Accept Current Change`, `Accept Incoming Change`, or `Accept Both Changes`
+   - Stage and commit the merge
+
+**For External Contributors:**
+
 1. **Pull from upstream**:
    - Click the `...` menu in the Source Control panel
    - Select `Pull from...`
@@ -369,6 +468,22 @@ gh pr create --title "Your PR Title" --body "Description of changes"
    - Click `Publish Branch`
 
 ### Submitting a Pull Request
+
+**For Team Members:**
+
+1. **Via GitHub Pull Requests Extension** (if installed):
+   - Install the "GitHub Pull Requests" extension if not already installed
+   - Click the GitHub icon in the left sidebar
+   - Click `Create Pull Request`
+   - Fill in title and description
+   - Click `Create`
+2. **Via Browser**:
+   - After pushing, VS Code may show a notification to create a PR
+   - Click the notification link, or visit the repository on GitHub
+   - Click `Compare & pull request`
+   - Fill in details and click `Create pull request`
+
+**For External Contributors:**
 
 1. **Via GitHub Pull Requests Extension** (if installed):
    - Install the "GitHub Pull Requests" extension if not already installed

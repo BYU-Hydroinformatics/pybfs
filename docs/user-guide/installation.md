@@ -5,14 +5,28 @@
 - Python 3.7 or higher
 - pip package manager
 
-## Installation from Source
+## Install from PyPI (recommended)
+
+```bash
+pip install pybfs
+```
+
+## Installation from source
 
 Clone the repository and install:
 
 ```bash
 git clone https://github.com/BYU-Hydroinformatics/pybfs.git
 cd pybfs
-pip install -r requirements.txt
+pip install .
+```
+
+## Development installation
+
+```bash
+git clone https://github.com/BYU-Hydroinformatics/pybfs.git
+cd pybfs
+pip install -e .
 ```
 
 ## Verify Installation

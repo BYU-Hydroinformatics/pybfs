@@ -4,13 +4,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pybfs"
-version = "0.1.0"
 description = "Python Baseflow Separation - A physically-based baseflow separation algorithm for hydrological analysis"
 readme = "README.md"
 requires-python = ">=3.7"
 license = {text = "MIT"}
 authors = [
-    {name = "BYU Hydroinformatics", email = ""}
+    {name = "BYU Hydroinformatics"}
 ]
 keywords = ["hydrology", "baseflow", "baseflow separation", "streamflow", "groundwater"]
 classifiers = [
@@ -27,10 +26,15 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
 ]
 
+dynamic = ["version"]
+
 dependencies = [
     "numpy>=1.19.0",
     "pandas>=1.1.0",
     "matplotlib>=3.3.0",
+    "numba>=0.56.0",
+    "scipy>=1.5.0",
+    "statsmodels>=0.13.0",
 ]
 
 [project.optional-dependencies]
@@ -57,4 +61,7 @@ packages = ["pybfs"]
 
 [tool.setuptools.package-data]
 pybfs = []
+
+[tool.setuptools.dynamic]
+version = {attr = "pybfs.__version__"}
 

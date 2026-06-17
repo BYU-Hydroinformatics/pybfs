@@ -5,3 +5,12 @@ recursive-include docs *
 global-exclude __pycache__
 global-exclude *.py[co]
 
+# Keep sdists lean: exclude large calibration artifacts, datasets, and notebooks
+prune bfs
+prune notebooks
+prune refs
+
+exclude *.csv
+exclude *.png
+exclude *.pdf
+

@@ -82,6 +82,82 @@ PyBFS can forecast future baseflow given initial conditions. The forecasting app
 
 This makes it useful for drought analysis and low-flow forecasting.
 
+### Parameter Calibration
+
+PyBFS includes an automated calibration system that optimizes model parameters directly from streamflow observations. This is particularly valuable when basin characteristics or hydraulic properties are unknown or uncertain.
+
+#### Calibration Process
+
+The calibration function (`bfs_calibrate`) performs a three-step optimization process:
+
+**Step 1: Initial Calibration (Beta = 1)**
+- Optimizes basin geometry (Lb, Wb), surface parameters (ALPHA, Ks), and base parameters (Kb, Kz)
+- Assumes a linear baseflow function (beta = 1)
+- Uses log-transformed parameters to handle wide parameter ranges
+
+**Step 2: Non-Linear Baseflow Function Calibration**
+- Tests beta values from 0.5 to 20 to find optimal non-linear storage-discharge relationship
+- For each beta, calibrates Lb, X1, Wb, and Kb to match recession rates across flow quantiles
+- Selects the beta value that best matches observed recession behavior
+- Re-optimizes base parameters (Lb, Wb, Kb, Kz) and surface parameters with the selected beta
+
+**Step 3: Final Calibration**
+- Selects parameter set with maximum baseflow fraction (BFF) from Step 2
+- Performs final optimization of all parameters (Lb, Wb, ALPHA, Ks, Kb, Kz)
+- Generates final calibrated parameters and model output
+
+#### Calibration Inputs
+
+The calibration function requires:
+- **Site identifier**: String or number identifying the site
+- **Drainage area**: Basin area in square meters
+- **Streamflow time series**: Daily streamflow values (m³/day)
+- **Date vector**: Corresponding dates for the streamflow data
+
+#### Calibration Outputs
+
+The calibration returns four outputs:
+- **bf_params**: DataFrame with calibrated parameters (Lb, X1, Wb, POR, ALPHA, BETA, Ks, Kb, Kz, flow metrics, Error, BFF)
+- **bff**: DataFrame with flow fractions (BFF = baseflow fraction, SFF = surface flow fraction, DRF = direct runoff fraction)
+- **ci_table**: DataFrame with credible intervals for baseflow estimates
+- **bfs_out**: Full BFS output DataFrame with separated flow components
+
+#### Automatic Flow Metrics
+
+The calibration automatically calculates flow metrics from the streamflow time series:
+- **Qthresh**: Base flow threshold used for calibration
+- **Rs**: Stormflow recession coefficient (2-day recession)
+- **Rb1**: Baseflow recession coefficient at mean flow (10-day recession)
+- **Rb2**: Baseflow recession rate at Qthresh
+- **Prec**: Precision of low flow measurements
+- **Fr4Rise**: Threshold for detecting streamflow rises
+
+These metrics are derived from recession analysis and help constrain the optimization to physically realistic parameter values.
+
+#### Calibration Objective
+
+The calibration minimizes a weighted error function that:
+- Penalizes over-prediction (baseflow > observed streamflow)
+- Weights errors by recession length (longer recessions have more influence)
+- Maximizes baseflow fraction while maintaining physical constraints
+- Ensures parameters remain within physically reasonable bounds
+
+#### When to Use Calibration
+
+Use calibration when:
+- Basin characteristics are unknown or uncertain
+- You want to optimize parameters for a specific site
+- You need site-specific parameters that match observed behavior
+- You're working with a new site without existing parameter estimates
+
+Use pre-calibrated parameters when:
+- Parameters are available from previous studies
+- You have measured basin characteristics and hydraulic properties
+- You want to use parameters calibrated for similar sites
+- You're comparing results using standardized parameters
+
+For detailed information about the calibration methodology, objective functions, and optimization procedures, refer to the USGS BFS manual (`refs/usgs_bfs_manual.pdf`).
+
 ## Best Practices
 
 - **Data Quality**: Ensure your streamflow data is complete and quality-checked before analysis

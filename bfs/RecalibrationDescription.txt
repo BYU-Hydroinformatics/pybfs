@@ -1,0 +1,36 @@
+Re-calibration of BFS
+
+The calibration procedure for BFS was revised to increase the simulated fraction of baseflow 
+
+The function "bf_sep" in the file "Rfunction.bfs.R" was revised so that daily errors are calculated as (Baseflow-Qob)/(Qob+prec). The weighting of errors was changed so that baseflow > observed streamflow is not assigned the highest weight of 1. The rules for adjusted percent error (APE) and weights:
+
+APE=(q4er-qin)/(qin+prec) #q4er is baseflow when error_basis = "base" or the sum of baseflow, surface flow, and direct runoff when error_basis="total
+APE[qin==0 & q4er==0]=0
+Weight=1-exp(rs*recess_day) #WEIGHT VARIES FROM O TO 1 WITH INCREASING LENGTH OF RECESSION
+Weight[APE>0]=1 #WEIGHT OF 1 IS ASSIGNED TO OVER PREDICTION
+
+The function "flow_metric" in the file "Rfunctions.bfs_utilities.R" was revised so that flow metrics are calculated at sites where first-order recession rates increase as streamflow decreases. These are typically non-perennial sites. The function also returns an estimate of the 10th quantile of recession rates as a function of streamflow used for 
+
+The function "base_table" in the file "Rfunctions.bfs_utilities.R" was revised to increase the resolution of low flows.
+
+The function "objective" was added to "Rfunctions.bfs_calibration_sub.R" that provides a convenient way to modify the calibration objectives. The objective function minimizes (observed-simulated) but only counts days when simulated < observed. It also updates the weights used by bfs_calibration to remove days when both observed flow and simulated flow are zero.
+
+The function "cal_initial", "cal_base" and "cal_surface in the file "Rfunctions.bfs_calibration_sub.R" was revised to limit the acceptable range of parameters and prevent the functions from reporting "Error".
+
+The function "cal_initial was revised to calibrate Lb, Wb, ALPHA, Ks, Kb, and Kz
+
+The function "cal_basetable" was revised to calibrate Lb, X1, Wb, and Kb with an objective of match first-order (% of flow) recession rates over a range of baseflow values.
+
+The function "cal_base" was revised to calibrate Lb, Wb, Kb, and Kz.
+
+The function "cal_surface" was revised to calibrate Wb, ALPHA, Ks, and Kz
+
+The order of calibration steps function "bfs_calibrate" was revised: 
+Step 1 is cal_initial and cal_surface;
+Step 2 is cal_basetable, cal_base, and cal_surface; and
+Step 3 is cal_initial.
+
+The "error_basis" for all steps in bfs_calibrate is "base".
+
+
+

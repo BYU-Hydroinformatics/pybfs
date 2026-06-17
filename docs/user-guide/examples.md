@@ -2,6 +2,19 @@
 
 This page demonstrates practical applications of PyBFS for baseflow separation and forecasting.
 
+## Interactive notebook (Google Colab)
+
+If you want to run these examples in a browser (no local setup), use the Colab notebook:
+
+<a href="https://colab.research.google.com/github/BYU-Hydroinformatics/pybfs/blob/main/notebooks/pybfs_forecast.ipynb" target="_"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
+
+At the first part of the notebook, you will be prompted to upload a streamflow file and a parameters file. You can download the required files here:
+
+Streamflow: [2312200_data.csv](../files/2312200_data.csv)<br>
+Parameters: [bfs_params_50.csv](../files/bfs_params_50.csv)
+
+The notebook includes code for a basic baseflow separation analysis and a short-term baseflow forecast.
+
 ## Baseflow Separation Example
 
 This example demonstrates how to use PyBFS to separate baseflow from streamflow data for a specific site. This assumes you have already installed PyBFS and have the necessary data files and are running within a Python environment.
@@ -105,27 +118,153 @@ streamflow_data_forecast = streamflow_data[
 bfs.plot_forecast_baseflow_streamflow(f, streamflow_data_forecast)
 ```
 
-## Google Colab Example
+## Calibration Example
 
-You can also run PyBFS in a Google Colab environment. Here is an example notebook that demonstrates how to do this:
+This example demonstrates how to calibrate PyBFS parameters automatically from streamflow data. Calibration is useful when you don't have pre-calibrated parameters or want to optimize parameters for a specific site. The calibration process follows the methodology described in the USGS BFS manual (see `refs/usgs_bfs_manual.pdf` for detailed information about the calibration algorithm and objective functions).
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/BYU-Hydroinformatics/pybfs/blob/main/notebooks/pybfs_sample.ipynb){target="_blank"}
+```python
+#!/usr/bin/env python3
+import pandas as pd
+import numpy as np
+import pybfs as bfs
 
-Before running this notebook, make sure to upload the necessary data files to the Colab environment. First of all, you will need to upload a copy of the pybfs.py file to the Colab environment. You can do this by clicking on the folder icon on the left sidebar, then clicking the upload icon (a paper with an upward arrow) to upload the pybfs.py file from your local machine.
+# Load streamflow data
+streamflow_data = pd.read_csv('your_streamflow_data.csv')
+streamflow_data['Date'] = pd.to_datetime(streamflow_data['Date'])
 
-The pybfs.py file can be found in the main PyBFS GitHub repository here: [pybfs.py](https://github.com/BYU-Hydroinformatics/pybfs/blob/main/pybfs.py)
+# Site information
+site_id = "12345678"
+site_area = 1.5e8  # Drainage area in m²
 
-Next, you will need to upload the data files used in the examples above (e.g., `2312200_data.csv`, `bfs_params_50.csv`). You can upload these files in the same way you uploaded the pybfs.py file. You can download a copy of the files using these links:
+# Extract streamflow and dates
+tmp_q = streamflow_data['Streamflow'].values
+dys = streamflow_data['Date'].values
 
-[2312200_data.csv](../files/2312200_data.csv)<br>
-[bfs_params_50.csv](../files/bfs_params_50.csv)
+print(f"Calibrating parameters for site {site_id}...")
+print(f"Using {len(tmp_q)} days of streamflow data")
+print(f"Date range: {dys[0]} to {dys[-1]}")
 
-Once you have uploaded the necessary files, you can run the cells in the notebook to perform baseflow separation and forecasting using PyBFS.
+# Run calibration
+# Note: This may take several minutes depending on data length
+bf_params, bff, ci_table, bfs_out = bfs.bfs_calibrate(
+    tmp_site=site_id,
+    tmp_area=site_area,
+    tmp_q=tmp_q,
+    dys=dys
+)
+
+# Check if calibration succeeded
+if bf_params is None:
+    print("Calibration failed - check your data quality")
+else:
+    print("\n=== Calibration Complete ===")
+    print(f"\nCalibrated Parameters:")
+    print(f"  Lb (Basin Length): {bf_params['Lb'].iloc[0]:.2f} m")
+    print(f"  X1 (Base Gradient): {bf_params['X1'].iloc[0]:.2f} m")
+    print(f"  Wb (Basin Width): {bf_params['Wb'].iloc[0]:.2f} m")
+    print(f"  POR (Porosity): {bf_params['POR'].iloc[0]:.4f}")
+    print(f"  ALPHA (Surface Gradient): {bf_params['ALPHA'].iloc[0]:.6f}")
+    print(f"  BETA (Base Exponent): {bf_params['BETA'].iloc[0]:.3f}")
+    print(f"  Ks (Surface Conductivity): {bf_params['Ks'].iloc[0]:.6f} m/day")
+    print(f"  Kb (Base Conductivity): {bf_params['Kb'].iloc[0]:.6f} m/day")
+    print(f"  Kz (Vertical Conductivity): {bf_params['Kz'].iloc[0]:.6f} m/day")
+    
+    print(f"\nFlow Fractions:")
+    print(f"  BFF (Baseflow Fraction): {bff['BFF'].iloc[0]:.3f}")
+    print(f"  SFF (Surface Flow Fraction): {bff['SFF'].iloc[0]:.3f}")
+    print(f"  DRF (Direct Runoff Fraction): {bff['DRF'].iloc[0]:.3f}")
+    print(f"  Error: {bff['Error'].iloc[0]:.6f}")
+    
+    # Extract calibrated parameters for use in baseflow separation
+    basin_char = [
+        site_area,
+        bf_params['Lb'].iloc[0],
+        bf_params['X1'].iloc[0],
+        bf_params['Wb'].iloc[0],
+        bf_params['POR'].iloc[0]
+    ]
+    
+    gw_hyd = [
+        bf_params['ALPHA'].iloc[0],
+        bf_params['BETA'].iloc[0],
+        bf_params['Ks'].iloc[0],
+        bf_params['Kb'].iloc[0],
+        bf_params['Kz'].iloc[0]
+    ]
+    
+    flow = [
+        bf_params['Qthresh'].iloc[0],
+        bf_params['Rs'].iloc[0],
+        bf_params['Rb1'].iloc[0],
+        bf_params['Rb2'].iloc[0],
+        bf_params['Prec'].iloc[0],
+        bf_params['Frac4Rise'].iloc[0]
+    ]
+    
+    # Generate baseflow table with calibrated parameters
+    SBT = bfs.base_table(basin_char[1], basin_char[2], basin_char[3],
+                         gw_hyd[1], gw_hyd[3], streamflow_data, basin_char[4])
+    
+    # Run baseflow separation with calibrated parameters
+    result = bfs.PyBFS(streamflow_data, SBT, basin_char, gw_hyd, flow)
+    
+    # Plot results
+    bfs.plot_baseflow_simulation(streamflow_data, result)
+    
+    # Save calibrated parameters for future use
+    bf_params.to_csv(f'bfs_params_{site_id}.csv', index=False)
+    print(f"\nCalibrated parameters saved to bfs_params_{site_id}.csv")
+```
+
+### Using Calibrated Parameters
+
+Once you have calibrated parameters, you can use them for baseflow separation on the same site or similar sites:
+
+```python
+# Load previously calibrated parameters
+bf_params = pd.read_csv('bfs_params_12345678.csv')
+
+# Extract parameters
+basin_char = [
+    bf_params['tmp.area'].iloc[0],
+    bf_params['Lb'].iloc[0],
+    bf_params['X1'].iloc[0],
+    bf_params['Wb'].iloc[0],
+    bf_params['POR'].iloc[0]
+]
+
+gw_hyd = [
+    bf_params['ALPHA'].iloc[0],
+    bf_params['BETA'].iloc[0],
+    bf_params['Ks'].iloc[0],
+    bf_params['Kb'].iloc[0],
+    bf_params['Kz'].iloc[0]
+]
+
+flow = [
+    bf_params['Qthresh'].iloc[0],
+    bf_params['Rs'].iloc[0],
+    bf_params['Rb1'].iloc[0],
+    bf_params['Rb2'].iloc[0],
+    bf_params['Prec'].iloc[0],
+    bf_params['Frac4Rise'].iloc[0]
+]
+
+# Use parameters for baseflow separation
+SBT = bfs.base_table(basin_char[1], basin_char[2], basin_char[3],
+                     gw_hyd[1], gw_hyd[3], streamflow_data, basin_char[4])
+result = bfs.PyBFS(streamflow_data, SBT, basin_char, gw_hyd, flow)
+```
 
 ## Tips and Best Practices
 
 - **Data Requirements**: Ensure your streamflow data has columns named 'Date' and 'Streamflow'
 - **Parameter Files**: Site parameter files should contain basin characteristics, groundwater hydraulic parameters, and flow metrics
-- **Calibration Period**: Use a representative period for calibration that captures different flow conditions
+- **Calibration Period**: Use a representative period for calibration that captures different flow conditions (at least several months, preferably a full year)
+- **Calibration Data Quality**: Ensure high-quality streamflow data with minimal gaps for best calibration results
+- **Calibration Time**: Calibration can take several minutes to hours depending on data length; be patient
 - **Initial Conditions**: For forecasting, always extract initial conditions from the last time step of your calibration run
+- **Parameter Validation**: After calibration, check that parameters are physically reasonable (e.g., conductivities between 10⁻⁸ and 10⁵ m/day)
+- **Error Metrics**: Review the calibration error and BFF values to assess calibration quality
 - **Visualization**: Use the provided plotting functions to visualize and validate your results
+- **Saving Parameters**: Save calibrated parameters for reuse to avoid re-calibrating for the same site

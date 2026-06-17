@@ -36,13 +36,13 @@ def main():
     parser = argparse.ArgumentParser(
         description="Run PyBFS for all sites and save BASEFLOW ONLY as a wide CSV (Date + one column per site)."
     )
-    parser.add_argument("--params", default="bfs/out/site_sum/bfs_params_python_all_sites.csv",
+    parser.add_argument("--params", default="streamflow_partitioning_paper_data/bfs_params_python_all_sites.csv",
                         help="CSV with calibrated parameters for all sites")
-    parser.add_argument("--streamflow", default="docs/files/streamflow_with_date.csv",
+    parser.add_argument("--streamflow", default="streamflow_partitioning_paper_data/streamflow_with_date.csv",
                         help="Wide streamflow table: Date column + site columns")
-    parser.add_argument("--outdir", default="bfs/out/site_sum",
+    parser.add_argument("--outdir", default="streamflow_partitioning_paper_data",
                         help="Output directory")
-    parser.add_argument("--outfile", default="baseflow_only_2018_all_sites.csv",
+    parser.add_argument("--outfile", default="baseflow_only_2018_all_sites_copy.csv",
                         help="Output wide CSV filename")
     parser.add_argument("--start", default="2018-01-01", help="Start date (inclusive)")
     parser.add_argument("--end", default="2018-12-31", help="End date (inclusive)")

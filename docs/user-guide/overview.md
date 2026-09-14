@@ -156,7 +156,7 @@ Use pre-calibrated parameters when:
 - You want to use parameters calibrated for similar sites
 - You're comparing results using standardized parameters
 
-For detailed information about the calibration methodology, objective functions, and optimization procedures, refer to the USGS BFS manual (`refs/usgs_bfs_manual.pdf`).
+For detailed information about the calibration methodology, objective functions, and optimization procedures, refer to the [USGS BFS manual](https://doi.org/10.3133/sir20225114) (USGS Scientific Investigations Report 2022-5114).
 
 ## Best Practices
 

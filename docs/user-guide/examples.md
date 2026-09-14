@@ -120,7 +120,7 @@ bfs.plot_forecast_baseflow_streamflow(f, streamflow_data_forecast)
 
 ## Calibration Example
 
-This example demonstrates how to calibrate PyBFS parameters automatically from streamflow data. Calibration is useful when you don't have pre-calibrated parameters or want to optimize parameters for a specific site. The calibration process follows the methodology described in the USGS BFS manual (see `refs/usgs_bfs_manual.pdf` for detailed information about the calibration algorithm and objective functions).
+This example demonstrates how to calibrate PyBFS parameters automatically from streamflow data. Calibration is useful when you don't have pre-calibrated parameters or want to optimize parameters for a specific site. The calibration process follows the methodology described in the [USGS BFS manual](https://doi.org/10.3133/sir20225114), which details the calibration algorithm and objective functions.
 
 ```python
 #!/usr/bin/env python3

@@ -50,7 +50,7 @@ PyBFS includes a comprehensive calibration system that automatically optimizes m
 - **Tests multiple baseflow function shapes** (beta parameter) to find the optimal non-linear relationship between storage and discharge
 - **Maximizes baseflow fraction** while minimizing prediction error, ensuring physically realistic parameter values
 
-The calibration function (`bfs_calibrate`) returns optimized parameters that can be used directly for baseflow separation, eliminating the need for manual parameter estimation. This makes PyBFS accessible to users who may not have detailed basin characteristics or hydraulic property measurements. The calibration process follows the methodology described in the USGS BFS manual (see `refs/usgs_bfs_manual.pdf`), ensuring consistency with the original R implementation.
+The calibration function (`bfs_calibrate`) returns optimized parameters that can be used directly for baseflow separation, eliminating the need for manual parameter estimation. This makes PyBFS accessible to users who may not have detailed basin characteristics or hydraulic property measurements. The calibration process follows the methodology described in the [USGS BFS manual](https://doi.org/10.3133/sir20225114) (USGS Scientific Investigations Report 2022-5114), ensuring consistency with the original R implementation.
 
 ## Quick Links
 

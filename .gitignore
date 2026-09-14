@@ -136,3 +136,15 @@ dmypy.json
 .DS_Store
 **/.DS_Store
 
+
+# Generated run outputs (written to the repo root by main*.py and pybfs.plot).
+# Root-anchored so they never shadow docs/images/*.
+/baseflow_simulation.png
+/baseflow_forecast.png
+/baseflow_forecast_streamflow.png
+/figure_3.png
+/bfs_comparison_*.png
+/bff_*_python.csv
+/bfs_params_*_python.csv
+# ...except this one, which main_skill.py reads as input.
+!/bfs_params_12167000_python.csv

@@ -76,6 +76,12 @@ plot_baseflow_simulation(streamflow_data, result)
 
 Full documentation is available at: [Documentation](https://github.com/BYU-Hydroinformatics/pybfs)
 
+## Paper data and reproduction scripts
+
+The data and analysis scripts for the streamflow partitioning paper
+(Webster-Esho et al., manuscript under review) live in a separate repository:
+https://github.com/EniolaWebsterEsho/streamflow_separation_paper_2026
+
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.

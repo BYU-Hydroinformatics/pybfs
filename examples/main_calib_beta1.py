@@ -12,6 +12,10 @@ import pandas as pd
 import numpy as np
 import pybfs
 
+from pathlib import Path
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+
 
 def main():
     """Main execution function for calibration testing"""
@@ -22,7 +26,7 @@ def main():
 
     # Load streamflow data
     print("Loading streamflow data...")
-    streamflow_data = pd.read_csv('bfs/12167000.csv', encoding='utf-8-sig')
+    streamflow_data = pd.read_csv(REPO_ROOT / "bfs/12167000.csv", encoding='utf-8-sig')
     streamflow_data['Date'] = pd.to_datetime(streamflow_data['Date'], format='%m/%d/%Y')
     
     # Extract streamflow and dates
@@ -35,8 +39,8 @@ def main():
 
     # Load R calibration parameters for comparison
     print("\nLoading R calibration parameters...")
-    r_params = pd.read_csv('bfs/out/site_sum/bfs_params_12167000.csv')
-    r_bff = pd.read_csv('bfs/out/site_sum/bff_12167000.csv')
+    r_params = pd.read_csv(REPO_ROOT / "bfs/out/site_sum/bfs_params_12167000.csv")
+    r_bff = pd.read_csv(REPO_ROOT / "bfs/out/site_sum/bff_12167000.csv")
 
     print(f"\nR calibration parameters for site {site_id}:")
     print(f"  AREA: {r_params['tmp.area'].iloc[0]}")
@@ -72,7 +76,7 @@ def main():
     print("This may take several minutes...")
 
     try:
-        bf_params, bff, ci_table, bfs_out = pybfs.bfs_calibrate(
+        bf_params, bff, ci_table, bfs_out = bfs_calibrate_beta1(
             tmp_site=site_id,
             tmp_area=site_area,
             tmp_q=tmp_q,

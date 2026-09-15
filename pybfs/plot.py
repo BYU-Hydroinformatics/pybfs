@@ -94,7 +94,7 @@ def plot_forecast(
 ):
     """Plot training-period streamflow/baseflow and forecast-period baseflow.
 
-    This helper is designed to match the workflow in `main.py`:
+    This helper is designed to match the workflow in `examples/main.py`:
     - Run `bfs()` on a training/calibration period to obtain baseflow separation
     - Run `forecast()` on a future period using initial conditions from the training run
     - Plot training streamflow + training baseflow (solid lines), and forecast baseflow

@@ -10,13 +10,17 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pybfs
 
+from pathlib import Path
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+
 # ── Configuration ─────────────────────────────────────────────────────────────
 site_number = 12167000
 quantile = 0.8  # Quantile for modified_strict_baseflow (e.g., 0.25 for 25th percentile)
 
 # ── Load data ──────────────────────────────────────────────────────────────────
 print("Loading data...")
-streamflow_data = pd.read_csv('bfs/12167000.csv')
+streamflow_data = pd.read_csv(REPO_ROOT / "bfs/12167000.csv")
 streamflow_data = streamflow_data.rename(columns={'mean_daily_streamflow': 'Streamflow'})
 streamflow_data['Date'] = pd.to_datetime(streamflow_data['Date'])
 n_zero = (streamflow_data['Streamflow'] == 0).sum()
@@ -24,7 +28,7 @@ if n_zero:
     print(f"Masking {n_zero} zero-flow days as NaN")
     streamflow_data.loc[streamflow_data['Streamflow'] == 0, 'Streamflow'] = np.nan
 
-bfs_params = pd.read_csv('bfs_params_12167000_python.csv')
+bfs_params = pd.read_csv(Path(__file__).resolve().parent / "bfs_params_12167000_python.csv")
 bfs_params = bfs_params.rename(columns={'tmp.site': 'site_no', 'tmp.area': 'AREA'})
 basin_char, gw_hyd, flow = pybfs.get_values_for_site(bfs_params, site_number)
 

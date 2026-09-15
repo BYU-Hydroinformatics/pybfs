@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
-"""Calibration functions for PyBFS
+"""Calibration with beta forced to 1 (experimental variant)
 
-Functions for calibrating the baseflow separation model parameters using
-optimization techniques to match observed streamflow behavior.
+A variant of `calibrate.py` that forces BETA = 1.0 instead of sweeping beta
+across a range of values. Everything else follows the standard calibration.
+
+This module and `examples/main_calib_beta1.py` live on the `calibration-beta1`
+branch rather than main, so the experiment stays out of the released package.
+Rebase onto main to pick up changes to `calibrate.py`, which this file forks.
 """
 
 import numpy as np

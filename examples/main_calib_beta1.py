@@ -11,6 +11,7 @@ This script:
 import pandas as pd
 import numpy as np
 import pybfs
+from pybfs.calibrate_beta1 import bfs_calibrate_beta1
 
 from pathlib import Path
 
